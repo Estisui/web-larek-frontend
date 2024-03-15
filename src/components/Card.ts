@@ -14,7 +14,7 @@ export class Card extends Component<IProduct> {
 	protected _description?: HTMLElement;
 	protected _button?: HTMLButtonElement;
 
-	constructor(container: HTMLElement, actions?: ICardActions) {
+	constructor(container: HTMLElement) {
 		super(container);
 
 		this._title = ensureElement<HTMLElement>('.card__title', container);
@@ -26,14 +26,6 @@ export class Card extends Component<IProduct> {
 		);
 		this._button = container.querySelector('.card__button');
 		this._description = container.querySelector('.card__description');
-
-		if (actions?.onClick) {
-			if (this._button) {
-				this._button.addEventListener('click', actions.onClick);
-			} else {
-				container.addEventListener('click', actions.onClick);
-			}
-		}
 	}
 
 	set id(value: string) {
