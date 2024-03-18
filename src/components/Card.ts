@@ -2,10 +2,6 @@ import { Component } from './base/Component';
 import { IProduct } from '../types';
 import { ensureElement } from '../utils/utils';
 
-interface ICardActions {
-	onClick: (event: MouseEvent) => void;
-}
-
 export class Card extends Component<IProduct> {
 	protected _title: HTMLElement;
 	protected _image?: HTMLImageElement;
@@ -60,8 +56,8 @@ export class Card extends Component<IProduct> {
 		return this._category.textContent || '';
 	}
 
-	set image(value: string) {
-		this.setImage(this._image, value, this.title);
+	set image(src: string) {
+		this.setImage(this._image, src, this.title);
 	}
 
 	set description(value: string) {
