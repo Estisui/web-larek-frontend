@@ -18,12 +18,9 @@ export class Card extends Component<IProduct> {
 		super(container);
 
 		this._title = ensureElement<HTMLElement>('.card__title', container);
-		this._image = ensureElement<HTMLImageElement>('.card__image', container);
+		this._image = container.querySelector('.card__image')
 		this._price = ensureElement<HTMLImageElement>('.card__price', container);
-		this._category = ensureElement<HTMLImageElement>(
-			'.card__category',
-			container
-		);
+		this._category = container.querySelector('.card__category')
 		this._button = container.querySelector('.card__button');
 		this._description = container.querySelector('.card__description');
 		
@@ -54,6 +51,9 @@ export class Card extends Component<IProduct> {
 
 	set price(value: string) {
 		this.setText(this._price, value);
+		if (this._button) {
+			this._button.disabled = !value;
+		}
 	}
 
 	get price(): string {
@@ -74,5 +74,9 @@ export class Card extends Component<IProduct> {
 
 	set description(value: string) {
 		this.setText(this._description, value);
+	}
+
+	set button(value: string) {
+		this.setText(this._button, value);
 	}
 }

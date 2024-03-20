@@ -30,6 +30,22 @@ export class AppData {
 		this.events.emit('preview:change', this.preview);
 	}
 
+	isInBasket(item: IProduct) {
+		return this.basket.items.includes(item.id);
+	}
+
+	addToBasket(item: IProduct) {
+		this.basket.items.push(item.id);
+		this.basket.total += item.price;
+		this.events.emit('basket:change', this.basket);
+	}
+
+	removeFromBasket(item: IProduct) {
+		this.basket.items = this.basket.items.filter(id => id !== item.id);
+		this.basket.total -= item.price;
+		this.events.emit('basket:change', this.basket);
+	}
+
 	clearBasket() {
 		this.basket.items = [];
 		this.basket.total = 0;
