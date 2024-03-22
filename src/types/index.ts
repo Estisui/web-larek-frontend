@@ -12,8 +12,10 @@ export interface IBasket {
 	total: number;
 }
 
+export type PaymentMethod = 'cash' | 'card';
+
 export interface IOrder {
-	payment: 'cash' | 'card';
+	payment: PaymentMethod;
 	email: string;
 	phone: string;
 	address: string;
