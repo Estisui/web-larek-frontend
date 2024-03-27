@@ -1,6 +1,7 @@
 import { Component } from './base/Component';
 import { IProduct } from '../types';
 import { ensureElement } from '../utils/utils';
+import { categories } from '../utils/constants';
 
 interface ICardActions {
 	onClick: (event: MouseEvent) => void;
@@ -62,11 +63,12 @@ export class Card extends Component<IProduct> {
 
 	set category(value: string) {
 		this.setText(this._category, value);
+		this._category.classList.add(`card__category_${categories.get(value) ? categories.get(value) : 'other'}`);
 	}
 
 	get category(): string {
 		return this._category.textContent || '';
-	}
+	}	
 
 	set image(src: string) {
 		this.setImage(this._image, src, this.title);
