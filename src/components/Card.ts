@@ -19,19 +19,19 @@ export class Card extends Component<IProduct> {
 		super(container);
 
 		this._title = ensureElement<HTMLElement>('.card__title', container);
-		this._image = container.querySelector('.card__image')
+		this._image = container.querySelector('.card__image');
 		this._price = ensureElement<HTMLImageElement>('.card__price', container);
-		this._category = container.querySelector('.card__category')
+		this._category = container.querySelector('.card__category');
 		this._button = container.querySelector('.card__button');
 		this._description = container.querySelector('.card__description');
-		
+
 		if (actions?.onClick) {
 			if (this._button) {
-					this._button.addEventListener('click', actions.onClick);
+				this._button.addEventListener('click', actions.onClick);
 			} else {
-					container.addEventListener('click', actions.onClick);
+				container.addEventListener('click', actions.onClick);
 			}
-	}
+		}
 	}
 
 	set id(value: string) {
@@ -51,7 +51,7 @@ export class Card extends Component<IProduct> {
 	}
 
 	set price(value: string) {
-		this.setText(this._price, value);
+		this.setText(this._price, value ? `${value} синапсов` : 'Бесценно');
 		if (this._button) {
 			this._button.disabled = !value;
 		}
@@ -63,12 +63,18 @@ export class Card extends Component<IProduct> {
 
 	set category(value: string) {
 		this.setText(this._category, value);
-		this._category.classList.add(`card__category_${categories.get(value) ? categories.get(value) : 'other'}`);
+		if (this._category) {
+			this._category.classList.add(
+				`card__category_${
+					categories.get(value) ? categories.get(value) : 'other'
+				}`
+			);
+		}
 	}
 
 	get category(): string {
 		return this._category.textContent || '';
-	}	
+	}
 
 	set image(src: string) {
 		this.setImage(this._image, src, this.title);
