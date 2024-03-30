@@ -20,6 +20,7 @@ const cardBasketTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
 const modalCardTemplate =
 	ensureElement<HTMLTemplateElement>('#modal-container');
 const orderTemplate = ensureElement<HTMLTemplateElement>('#order');
+const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 
 const events = new EventEmitter();
 
@@ -31,6 +32,7 @@ const modal = new Modal(modalCardTemplate, events);
 const page = new Page(document.body, events);
 const basket = new Basket(events);
 const orderForm = new Order(cloneTemplate(orderTemplate), events);
+const contactsForm = new Order(cloneTemplate(contactsTemplate), events);
 
 // Дальше идет бизнес-логика
 events.on('modal:open', () => {
@@ -101,8 +103,19 @@ events.on('order:open', () => {
 	});
 });
 
+events.on('order:submit', () => {
+	modal.render({
+		content: contactsForm.render({
+			email: '',
+			phone: '',
+			valid: false,
+			errors: [],
+		}),
+	});
+});
+
 events.on(
-	/^order\..*:change$/,
+	/^(order|contacts)\..*:change$/,
 	(data: { field: keyof OrderForm; value: string }) => {
 		appData.setOrderField(data.field, data.value);
 	}
@@ -111,11 +124,8 @@ events.on(
 events.on('formErrors:change', (error: Partial<OrderForm>) => {
 	const { payment, address, email, phone } = error;
 	orderForm.valid = !payment && !address;
+	contactsForm.valid = !email && !phone;
 });
-
-events.on('order:submit', () => {
-	console.log('submit');
-})
 
 api
 	.getProductList()

@@ -66,7 +66,6 @@ export class AppData {
 		if (this.order.payment && this.validateOrder()) {
 			this.order.total = this.basket.total;
 			this.order.items = this.basket.items;
-			this.events.emit('order:ready', this.order);
 		}
 	}
 
