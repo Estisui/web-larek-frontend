@@ -6,6 +6,7 @@ import { WebLarekAPI } from './components/WebLarekApi';
 import { EventEmitter } from './components/base/events';
 import { Basket } from './components/common/Basket';
 import { Modal } from './components/common/Modal';
+import { Success } from './components/common/Success';
 import './scss/styles.scss';
 import { IProduct, OrderForm } from './types';
 import { API_URL, CDN_URL } from './utils/constants';
@@ -21,6 +22,7 @@ const modalCardTemplate =
 	ensureElement<HTMLTemplateElement>('#modal-container');
 const orderTemplate = ensureElement<HTMLTemplateElement>('#order');
 const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
+const successTemplate = ensureElement<HTMLTemplateElement>('#success');
 
 const events = new EventEmitter();
 
@@ -33,6 +35,9 @@ const page = new Page(document.body, events);
 const basket = new Basket(events);
 const orderForm = new Order(cloneTemplate(orderTemplate), events);
 const contactsForm = new Order(cloneTemplate(contactsTemplate), events);
+const success = new Success(cloneTemplate(successTemplate), events, {
+	onClick: () => modal.close(),
+});
 
 // Дальше идет бизнес-логика
 events.on('modal:open', () => {
@@ -125,6 +130,20 @@ events.on('formErrors:change', (error: Partial<OrderForm>) => {
 	const { payment, address, email, phone } = error;
 	orderForm.valid = !payment && !address;
 	contactsForm.valid = !email && !phone;
+});
+
+events.on('contacts:submit', () => {
+	api
+		.createOrder(appData.order)
+		.then((data) => {
+			modal.render({
+				content: success.render(),
+			});
+			success.total = data.total;
+			appData.clearBasket();
+			appData.clearOrder();
+		})
+		.catch((err) => console.log(err));
 });
 
 api

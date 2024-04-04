@@ -84,4 +84,15 @@ export class AppData {
 		this.events.emit('formErrors:change', this.formErrors);
 		return Object.keys(errors).length === 0;
 	}
+
+	clearOrder() {
+		this.order = {
+			email: '',
+			phone: '',
+			address: '',
+			payment: 'card',
+			total: 0,
+			items: [],
+		};
+	}
 }
