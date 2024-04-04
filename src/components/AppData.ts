@@ -1,4 +1,4 @@
-import { IBasket, IOrder, IProduct, OrderForm, PaymentMethod } from '../types';
+import { IBasket, IProduct, OrderForm, PaymentMethod } from '../types';
 import { IEvents } from './base/events';
 
 export class AppData {
@@ -8,13 +8,11 @@ export class AppData {
 		items: [],
 		total: 0,
 	};
-	order: IOrder = {
+	order: OrderForm = {
 		email: '',
 		phone: '',
 		address: '',
 		payment: 'card',
-		total: 0,
-		items: [],
 	};
 	formErrors: Partial<Record<keyof OrderForm, string>> = {};
 
@@ -62,11 +60,6 @@ export class AppData {
 		} else {
 			this.order[field] = value;
 		}
-
-		if (this.order.payment && this.validateOrder()) {
-			this.order.total = this.basket.total;
-			this.order.items = this.basket.items;
-		}
 	}
 
 	validateOrder() {
@@ -91,8 +84,6 @@ export class AppData {
 			phone: '',
 			address: '',
 			payment: 'card',
-			total: 0,
-			items: [],
 		};
 	}
 }

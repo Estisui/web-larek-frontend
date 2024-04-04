@@ -123,6 +123,7 @@ events.on(
 	/^(order|contacts)\..*:change$/,
 	(data: { field: keyof OrderForm; value: string }) => {
 		appData.setOrderField(data.field, data.value);
+		appData.validateOrder();
 	}
 );
 
@@ -134,7 +135,7 @@ events.on('formErrors:change', (error: Partial<OrderForm>) => {
 
 events.on('contacts:submit', () => {
 	api
-		.createOrder(appData.order)
+		.createOrder({ ...appData.order, ...appData.basket })
 		.then((data) => {
 			modal.render({
 				content: success.render(),
