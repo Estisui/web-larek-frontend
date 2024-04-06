@@ -1,6 +1,6 @@
 import { AppData } from './components/AppData';
 import { Card } from './components/Card';
-import { Order } from './components/Order';
+import { OrderForm } from './components/OrderForm';
 import { Page } from './components/Page';
 import { WebLarekAPI } from './components/WebLarekApi';
 import { EventEmitter } from './components/base/Events';
@@ -8,7 +8,7 @@ import { Basket } from './components/Basket';
 import { Modal } from './components/common/Modal';
 import { Success } from './components/Success';
 import './scss/styles.scss';
-import { IProduct, OrderForm } from './types';
+import { IProduct, TOrderForm } from './types';
 import { API_URL, CDN_URL } from './utils/constants';
 import { cloneTemplate, ensureElement } from './utils/utils';
 
@@ -33,8 +33,8 @@ const appData = new AppData(events);
 const modal = new Modal(modalCardTemplate, events);
 const page = new Page(document.body, events);
 const basket = new Basket(events);
-const orderForm = new Order(cloneTemplate(orderTemplate), events);
-const contactsForm = new Order(cloneTemplate(contactsTemplate), events);
+const orderForm = new OrderForm(cloneTemplate(orderTemplate), events);
+const contactsForm = new OrderForm(cloneTemplate(contactsTemplate), events);
 const success = new Success(cloneTemplate(successTemplate), events, {
 	onClick: () => modal.close(),
 });
@@ -121,7 +121,7 @@ events.on('order:submit', () => {
 
 events.on(
 	/^(order|contacts)\..*:change$/,
-	(data: { field: keyof OrderForm; value: string }) => {
+	(data: { field: keyof TOrderForm; value: string }) => {
 		appData.setOrderField(data.field, data.value);
 		appData.validateOrder();
 	}

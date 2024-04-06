@@ -23,7 +23,7 @@ export interface IOrder {
 	total: number;
 }
 
-export type OrderForm = Omit<IOrder, 'total' | 'items'>;
+export type TOrderForm = Omit<IOrder, 'total' | 'items'>;
 
 export interface IOrderResult {
 	id: string;
