@@ -1,4 +1,5 @@
 import { IBasket, IProduct, OrderForm, PaymentMethod } from '../types';
+import { EMAIL_REGEXP, TEL_REGEXP } from '../utils/constants';
 import { IEvents } from './base/Events';
 
 export class AppData {
@@ -64,10 +65,10 @@ export class AppData {
 
 	validateOrder() {
 		const errors: typeof this.formErrors = {};
-		if (!this.order.email) {
+		if (!this.order.email || !EMAIL_REGEXP.test(this.order.email)) {
 			errors.email = 'Необходимо указать email';
 		}
-		if (!this.order.phone) {
+		if (!this.order.phone || !TEL_REGEXP.test(this.order.phone)) {
 			errors.phone = 'Необходимо указать телефон';
 		}
 		if (!this.order.address) {
