@@ -31,25 +31,21 @@ export class Basket extends View<IBasketView> {
 		this.items = [];
 	}
 
+	toggleButton(state: boolean) {
+		this.setDisabled(this._button, !state);
+	}
+
 	set items(items: HTMLElement[]) {
 		if (items.length) {
 			this._list.replaceChildren(...items);
-			this.setDisabled(this._button, false);
+			this.toggleButton(true);
 		} else {
 			this._list.replaceChildren(
 				createElement<HTMLParagraphElement>('p', {
 					textContent: 'Корзина пуста',
 				})
 			);
-			this.setDisabled(this._button, true);
-		}
-	}
-
-	set selected(items: string[]) {
-		if (items.length) {
-			this.setDisabled(this._button, false);
-		} else {
-			this.setDisabled(this._button, true);
+			this.toggleButton(false);
 		}
 	}
 
