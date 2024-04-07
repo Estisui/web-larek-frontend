@@ -8,7 +8,7 @@ import { Basket } from './components/Basket';
 import { Modal } from './components/common/Modal';
 import { Success } from './components/Success';
 import './scss/styles.scss';
-import { IProduct, TOrder, TOrderForm } from './types';
+import { IProduct, TOrder } from './types';
 import { API_URL, CDN_URL } from './utils/constants';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { ContactsForm } from './components/ContactsForm';
@@ -122,7 +122,7 @@ events.on('order:submit', () => {
 
 events.on(
 	/^(order|contacts)\..*:change$/,
-	(data: { field: keyof TOrderForm; value: string }) => {
+	(data: { field: keyof TOrder; value: string }) => {
 		appData.setOrderField(data.field, data.value);
 		appData.validateOrder();
 	}

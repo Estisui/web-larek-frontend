@@ -1,4 +1,4 @@
-import { IBasket, IProduct, TOrderForm, PaymentMethod, TOrder } from '../types';
+import { IBasket, IProduct, PaymentMethod, TOrder } from '../types';
 import { EMAIL_REGEXP, TEL_REGEXP } from '../utils/constants';
 import { IEvents } from './base/Events';
 
@@ -55,7 +55,7 @@ export class AppData {
 		this.order.payment = method;
 	}
 
-	setOrderField(field: keyof TOrderForm, value: string) {
+	setOrderField(field: keyof TOrder, value: string) {
 		if (field === 'payment') {
 			this.setPayment(value as PaymentMethod);
 		} else {
