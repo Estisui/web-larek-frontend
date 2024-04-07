@@ -170,10 +170,10 @@ events.on('contacts:submit', () => {
 			appData.clearBasket();
 			appData.clearOrder();
 		})
-		.catch((err) => console.log(err));
+		.catch(console.error)
 });
 
 api
 	.getProductList()
 	.then(appData.setItems.bind(appData))
-	.catch((err) => console.log(err));
+	.catch(console.error)
