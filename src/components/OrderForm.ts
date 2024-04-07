@@ -1,31 +1,37 @@
 import { Form } from './common/Form';
 import { TOrderForm, PaymentMethod } from '../types';
 import { IEvents } from './base/Events';
+import { ensureElement } from '../utils/utils';
 
 export class OrderForm extends Form<TOrderForm> {
-	protected _paymentCard?: HTMLButtonElement;
-	protected _paymentCash?: HTMLButtonElement;
+	protected _paymentCard: HTMLButtonElement;
+	protected _paymentCash: HTMLButtonElement;
+	protected _address: HTMLInputElement;
 
 	constructor(container: HTMLFormElement, events: IEvents) {
 		super(container, events);
 
-		if (
-			container.querySelector('.button_alt[name=card]') &&
-			container.querySelector('.button_alt[name=cash]')
-		) {
-			this._paymentCard = container.querySelector('.button_alt[name=card]');
-			this._paymentCash = container.querySelector('.button_alt[name=cash]');
+		this._paymentCard = ensureElement<HTMLButtonElement>(
+			'.button_alt[name=card]',
+			this.container
+		);
+		this._paymentCash = ensureElement<HTMLButtonElement>(
+			'.button_alt[name=cash]',
+			this.container
+		);
+		this._address = ensureElement<HTMLInputElement>(
+			'.form__input[name=address]',
+			this.container
+		);
 
-			this._paymentCard.addEventListener('click', () => {
-				this.payment = 'card';
-				this.onInputChange('payment', 'card');
-			});
-
-			this._paymentCash.addEventListener('click', () => {
-				this.payment = 'cash';
-				this.onInputChange('payment', 'cash');
-			});
-		}
+		this._paymentCard.addEventListener('click', () => {
+			this.payment = 'card';
+			this.onInputChange('payment', 'card');
+		});
+		this._paymentCash.addEventListener('click', () => {
+			this.payment = 'cash';
+			this.onInputChange('payment', 'cash');
+		});
 	}
 
 	set payment(value: PaymentMethod) {
@@ -34,17 +40,6 @@ export class OrderForm extends Form<TOrderForm> {
 	}
 
 	set address(value: string) {
-		(this.container.elements.namedItem('address') as HTMLInputElement).value =
-			value;
-	}
-
-	set email(value: string) {
-		(this.container.elements.namedItem('email') as HTMLInputElement).value =
-			value;
-	}
-
-	set phone(value: string) {
-		(this.container.elements.namedItem('phone') as HTMLInputElement).value =
-			value;
+		this._address.value = value;
 	}
 }

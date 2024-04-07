@@ -1,4 +1,4 @@
-import { IBasket, IProduct, TOrderForm, PaymentMethod } from '../types';
+import { IBasket, IProduct, TOrderForm, PaymentMethod, TOrder } from '../types';
 import { EMAIL_REGEXP, TEL_REGEXP } from '../utils/constants';
 import { IEvents } from './base/Events';
 
@@ -9,13 +9,13 @@ export class AppData {
 		items: [],
 		total: 0,
 	};
-	order: TOrderForm = {
+	order: TOrder = {
 		email: '',
 		phone: '',
 		address: '',
 		payment: 'card',
 	};
-	formErrors: Partial<Record<keyof TOrderForm, string>> = {};
+	formErrors: Partial<Record<keyof TOrder, string>> = {};
 
 	constructor(protected events: IEvents) {}
 

@@ -23,7 +23,9 @@ export interface IOrder {
 	total: number;
 }
 
-export type TOrderForm = Omit<IOrder, 'total' | 'items'>;
+export type TOrder = Omit<IOrder, 'items' | 'total'>
+export type TOrderForm = Pick<IOrder, 'payment' | 'address'>;
+export type TContactsForm = Pick<IOrder, 'email' | 'phone'>;
 
 export interface IOrderResult {
 	id: string;

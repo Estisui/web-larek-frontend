@@ -8,9 +8,10 @@ import { Basket } from './components/Basket';
 import { Modal } from './components/common/Modal';
 import { Success } from './components/Success';
 import './scss/styles.scss';
-import { IProduct, TOrderForm } from './types';
+import { IProduct, TOrder, TOrderForm } from './types';
 import { API_URL, CDN_URL } from './utils/constants';
 import { cloneTemplate, ensureElement } from './utils/utils';
+import { ContactsForm } from './components/ContactsForm';
 
 const api = new WebLarekAPI(CDN_URL, API_URL);
 
@@ -34,7 +35,7 @@ const modal = new Modal(modalCardTemplate, events);
 const page = new Page(document.body, events);
 const basket = new Basket(events);
 const orderForm = new OrderForm(cloneTemplate(orderTemplate), events);
-const contactsForm = new OrderForm(cloneTemplate(contactsTemplate), events);
+const contactsForm = new ContactsForm(cloneTemplate(contactsTemplate), events);
 const success = new Success(cloneTemplate(successTemplate), events, {
 	onClick: () => modal.close(),
 });
@@ -127,7 +128,7 @@ events.on(
 	}
 );
 
-events.on('formErrors:change', (error: Partial<OrderForm>) => {
+events.on('formErrors:change', (error: Partial<TOrder>) => {
 	const { payment, address, email, phone } = error;
 	orderForm.valid = !payment && !address;
 	contactsForm.valid = !email && !phone;
