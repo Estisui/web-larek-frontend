@@ -122,7 +122,7 @@ events.on('order:submit', () => {
 
 events.on(
 	/^(order|contacts)\..*:change$/,
-	(data: { field: keyof TOrderForm; value: string }) => {
+	(data: { field: keyof TOrder; value: string }) => {
 		appData.setOrderField(data.field, data.value);
 		appData.validateOrder();
 	}

@@ -55,7 +55,7 @@ export class AppData {
 		this.order.payment = method;
 	}
 
-	setOrderField(field: keyof TOrderForm, value: string) {
+	setOrderField(field: keyof TOrder, value: string) {
 		if (field === 'payment') {
 			this.setPayment(value as PaymentMethod);
 		} else {
