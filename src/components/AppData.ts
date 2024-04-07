@@ -63,19 +63,30 @@ export class AppData {
 		}
 	}
 
-	validateOrder() {
+	validateOrderForm() {
 		const errors: typeof this.formErrors = {};
-		if (!this.order.email || !EMAIL_REGEXP.test(this.order.email)) {
-			errors.email = 'Необходимо указать email';
-		}
-		if (!this.order.phone || !TEL_REGEXP.test(this.order.phone)) {
-			errors.phone = 'Необходимо указать телефон';
-		}
 		if (!this.order.address) {
 			errors.address = 'Необходимо указать адрес';
 		}
 		this.formErrors = errors;
-		this.events.emit('formErrors:change', this.formErrors);
+		this.events.emit('orderFormErrors:change', this.formErrors);
+		return Object.keys(errors).length === 0;
+	}
+
+	validateContactsForm() {
+		const errors: typeof this.formErrors = {};
+		if (!this.order.email) {
+			errors.email = 'Необходимо указать email';
+		} else if (!EMAIL_REGEXP.test(this.order.email)) {
+			errors.email = 'Неправильно указан email';
+		}
+		if (!this.order.phone) {
+			errors.phone = 'Необходимо указать телефон';
+		} else if (!TEL_REGEXP.test(this.order.phone)) {
+			errors.phone = 'Неправильно указан телефон';
+		}
+		this.formErrors = errors;
+		this.events.emit('contactsFormErrors:change', this.formErrors);
 		return Object.keys(errors).length === 0;
 	}
 

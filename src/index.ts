@@ -99,6 +99,7 @@ events.on('basket:open', () => {
 });
 
 events.on('order:open', () => {
+	appData.clearOrder();
 	modal.render({
 		content: orderForm.render({
 			payment: 'card',
@@ -121,17 +122,41 @@ events.on('order:submit', () => {
 });
 
 events.on(
-	/^(order|contacts)\..*:change$/,
+	/^order\..*:change$/,
 	(data: { field: keyof TOrder; value: string }) => {
 		appData.setOrderField(data.field, data.value);
-		appData.validateOrder();
+		appData.validateOrderForm();
 	}
 );
 
-events.on('formErrors:change', (error: Partial<TOrder>) => {
-	const { payment, address, email, phone } = error;
-	orderForm.valid = !payment && !address;
-	contactsForm.valid = !email && !phone;
+events.on(
+	/^contacts\..*:change$/,
+	(data: { field: keyof TOrder; value: string }) => {
+		appData.setOrderField(data.field, data.value);
+		appData.validateContactsForm();
+	}
+);
+
+events.on('orderFormErrors:change', (error: Partial<TOrder>) => {
+	const { payment, address } = error;
+	const formIsValid = !payment && !address;
+	orderForm.valid = formIsValid;
+	if (!formIsValid) {
+		orderForm.errors = address;
+	} else {
+		orderForm.errors = '';
+	}
+});
+
+events.on('contactsFormErrors:change', (error: Partial<TOrder>) => {
+	const { email, phone } = error;
+	const formIsValid = !email && !phone;
+	contactsForm.valid = formIsValid;
+	if (!formIsValid) {
+		contactsForm.errors = email || phone;
+	} else {
+		contactsForm.errors = '';
+	}
 });
 
 events.on('contacts:submit', () => {
